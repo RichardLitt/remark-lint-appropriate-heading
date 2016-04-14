@@ -1,6 +1,6 @@
 {
   "name": "remark-lint-appropriate-heading",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Check that the top-level heading matches the directory name",
   "main": "dist/appropriate-heading.js",
   "dependencies": {
@@ -36,5 +36,9 @@
   },
   "homepage": "https://github.com/RichardLitt/remark-lint-appropriate-heading",
   "author": "Richard Littauer <richard.littauer@gmail.com> (http://burntfen.com)",
-  "license": "MIT"
+  "license": "MIT",
+  "coordinates": [
+    42.3890823,
+    -71.1202526
+  ]
 }
