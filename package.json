@@ -1,0 +1,40 @@
+{
+  "name": "remark-lint-appropriate-heading",
+  "version": "1.0.0",
+  "description": "Check that the top-level heading matches the directory name",
+  "main": "dist/appropriate-heading.js",
+  "dependencies": {
+    "lodash": "^4.11.1",
+    "path": "^0.12.7",
+    "unist-util-visit": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.3.17",
+    "babel-eslint": "^5.0.0-beta6",
+    "babel-preset-es2015": "^6.3.13",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^2.1.1",
+    "eslint-plugin-react": "^3.11.3"
+  },
+  "scripts": {
+    "build": "babel lib -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RichardLitt/remark-lint-appropriate-heading.git"
+  },
+  "keywords": [
+    "remark",
+    "lint",
+    "markdown",
+    "md",
+    "title",
+    "heading"
+  ],
+  "bugs": {
+    "url": "https://github.com/RichardLitt/remark-lint-appropriate-heading/issues"
+  },
+  "homepage": "https://github.com/RichardLitt/remark-lint-appropriate-heading",
+  "author": "Richard Littauer <richard.littauer@gmail.com> (http://burntfen.com)",
+  "license": "MIT"
+}
