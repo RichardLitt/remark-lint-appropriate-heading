@@ -17,7 +17,6 @@ A title on the second line
 
 <!-- Valid -->
 # appropriate-heading
-
 ```
 
 ## Using the rule
