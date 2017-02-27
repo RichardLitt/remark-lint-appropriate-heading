@@ -4,9 +4,10 @@
   "description": "Check that the top-level heading matches the directory name",
   "main": "dist/appropriate-heading.js",
   "dependencies": {
-    "lodash": "^4.11.1",
-    "path": "^0.12.7",
-    "unist-util-visit": "^1.0.0"
+    "mdast-util-to-string": "^1.0.2",
+    "unified-lint-rule": "^1.0.0",
+    "unist-util-is": "^2.0.0",
+    "unist-util-position": "^3.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",

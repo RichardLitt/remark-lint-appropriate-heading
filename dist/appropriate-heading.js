@@ -1,31 +1,28 @@
 'use strict';
 
-var visit = require('unist-util-visit');
+var rule = require('unified-lint-rule');
+var is = require('unist-util-is');
+var position = require('unist-util-position');
+var toString = require('mdast-util-to-string');
 var sep = require('path').sep;
-var last = require('lodash').last;
 
-function appropriateHeading(ast, file, preferred, done) {
-  visit(ast, function (node, index, parent) {
-    var headingText = file.directory && file.directory !== '.' ? last(file.directory.split(sep)) : last(process.cwd().split(sep));
+function appropriateHeading(tree, file, preferred) {
+  var dirnames = (file.dirname === '.' ? file.cwd : file.dirname).split(sep);
+  var expected = dirnames[dirnames.length - 1].toLowerCase();
+  var head = tree.children[0];
+  var actual = void 0;
 
-    if (node.type === 'root') {
-      if (node.children[0].type !== 'heading') {
-        file.warn('Document must start with a heading');
-      } else {
-        if (node.position.start.line !== 1 || node.position.start.column !== 1) {
-          file.warn('Heading does not start at beginning of document');
-        }
+  if (!is('heading', head)) {
+    file.message('Document must start with a heading', head || tree);
+  } else if (position.start(head).line !== 1) {
+    file.message('Heading does not start at beginning of document', head);
+  } else {
+    actual = toString(head).toLowerCase();
 
-        if (node.children[0].children[0] && node.children[0].children[0].type === 'text' && node.children[0].children[0].value !== headingText) {
-          file.warn('Heading \'' + node.children[0].children[0].value + '\' is not the directory name');
-        }
-      }
+    if (actual !== expected) {
+      file.warn('Heading \'' + actual + '\' is not the directory name', head);
     }
-  });
-
-  done();
+  }
 }
 
-module.exports = {
-  'appropriate-heading': appropriateHeading
-};
+module.exports = rule('remark-lint:appropriate-heading', appropriateHeading);
