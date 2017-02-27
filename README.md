@@ -38,7 +38,7 @@ Valid, `~/example/d.md`:
 
 ```bash
 npm install -g remark-cli
-npm install remark-lint remark-lint-alphabetize-lists
+npm install remark-lint remark-lint-appropriate-heading
 ```
 
 Then, set up your `.remarkrc`:
