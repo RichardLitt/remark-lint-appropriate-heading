@@ -1,7 +1,0 @@
-{
-  "plugins": {
-    "remark-lint": {
-      "external": ["remark-lint-appropriate-heading"]
-    }
-  }
-}
