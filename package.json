@@ -15,14 +15,22 @@
     "remark": "^7.0.0",
     "remark-cli": "^3.0.0",
     "remark-lint": "^6.0.0",
-    "standard": "^8.6.0"
+    "standard": "^8.6.0",
+    "tape": "^4.6.3",
+    "vfile": "^2.0.1"
   },
   "scripts": {
-    "lint": "standard lib",
+    "lint": "standard",
     "build-lib": "babel lib -d dist",
     "build-md": "remark . -qfo",
     "build": "npm run build-md && npm run build-lib",
-    "test": "npm run lint && npm run build"
+    "test-api": "node test",
+    "test": "npm run lint && npm run build && npm run test-api"
+  },
+  "standard": {
+    "ignore": [
+      "dist"
+    ]
   },
   "repository": {
     "type": "git",
