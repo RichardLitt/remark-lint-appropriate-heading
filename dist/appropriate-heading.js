@@ -5,6 +5,15 @@ var is = require('unist-util-is');
 var position = require('unist-util-position');
 var toString = require('mdast-util-to-string');
 var sep = require('path').sep;
+var slugify = require('slugify');
+
+function match(directory, title, mode) {
+  if (mode === 'exact') {
+    return directory === title;
+  }
+
+  return directory === slugify(title);
+}
 
 function appropriateHeading(tree, file, preferred) {
   var dirnames = (file.dirname === '.' ? file.cwd : file.dirname).split(sep);
@@ -19,7 +28,7 @@ function appropriateHeading(tree, file, preferred) {
   } else {
     actual = toString(head).toLowerCase();
 
-    if (actual !== expected) {
+    if (!match(expected, actual, preferred || 'exact')) {
       file.warn('Heading \'' + actual + '\' is not the directory name', head);
     }
   }

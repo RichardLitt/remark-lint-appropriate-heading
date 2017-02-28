@@ -4,7 +4,8 @@ const lint = require('remark-lint')
 const vfile = require('vfile')
 const appropriateHeading = require('./')
 
-const processor = remark().use(lint).use(appropriateHeading)
+const processorWithOptions = (options) => remark().use(lint).use(appropriateHeading, options)
+const processor = processorWithOptions()
 
 const ok = `# Heading
 `
@@ -21,8 +22,12 @@ const tooLowHeading = `
 
 const empty = ``
 
+const multiWordHeading = `# Multi-Word Heading
+`
+
 test('remark-lint-appropriate-heading', (t) => {
   var fp = '~/heading/readme.md'
+  var mwfp = '~/multi-word-heading/readme.md'
 
   t.deepEqual(
     processor.processSync(vfile({path: fp, contents: ok})).messages.map(String),
@@ -31,8 +36,20 @@ test('remark-lint-appropriate-heading', (t) => {
   )
 
   t.deepEqual(
+    processorWithOptions('slug').processSync(vfile({path: mwfp, contents: multiWordHeading})).messages.map(String),
+    [],
+    'should work on valid fixtures'
+  )
+
+  t.deepEqual(
     processor.processSync(vfile({path: fp, contents: invalidHeading})).messages.map(String),
     ['~/heading/readme.md:1:1-1:10: Heading \'invalid\' is not the directory name'],
+    'should warn for invalid headings (mismatch in directory and heading)'
+  )
+
+  t.deepEqual(
+    processor.processSync(vfile({path: mwfp, contents: multiWordHeading})).messages.map(String),
+    ['~/multi-word-heading/readme.md:1:1-1:21: Heading \'multi-word heading\' is not the directory name'],
     'should warn for invalid headings (mismatch in directory and heading)'
   )
 
