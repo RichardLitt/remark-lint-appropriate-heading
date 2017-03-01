@@ -5,14 +5,15 @@ var is = require('unist-util-is');
 var position = require('unist-util-position');
 var toString = require('mdast-util-to-string');
 var sep = require('path').sep;
-var slugify = require('slugify');
+var GithubSlugger = require('github-slugger');
+var slugger = new GithubSlugger();
 
 function match(directory, title, mode) {
   if (mode === 'exact') {
     return directory === title;
   }
 
-  return directory === slugify(title);
+  return directory === slugger.slug(title);
 }
 
 function appropriateHeading(tree, file, preferred) {

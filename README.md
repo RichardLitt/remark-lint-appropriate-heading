@@ -6,7 +6,7 @@ This [remark-lint](https://github.com/wooorm/remark-lint) rule was created for [
 
 This rule checks that the top title is in the right position, and that it references the current directory name.
 
-*Options:* `exact`, `slug`, default: `exact`
+_Options:_ `exact`, `slug`, default: `exact`
 
 With default options, `exact`, checks that the exact lowercase title matches the directory name. 
 With options `slug`, checks that the slugified title matches the directory name. 
