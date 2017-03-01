@@ -4,6 +4,7 @@
   "description": "Check that the top-level heading matches the directory name",
   "main": "dist/appropriate-heading.js",
   "dependencies": {
+    "github-slugger": "^1.1.1",
     "mdast-util-to-string": "^1.0.2",
     "unified-lint-rule": "^1.0.0",
     "unist-util-is": "^2.0.0",
