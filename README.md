@@ -8,8 +8,8 @@ This rule checks that the top title is in the right position, and that it refere
 
 _Options:_ `exact`, `slug`, default: `exact`
 
-With default options, `exact`, checks that the exact lowercase title matches the directory name. 
-With options `slug`, checks that the slugified title matches the directory name. 
+With default options, `exact`, checks that the exact lowercase title matches the directory name.
+With options `slug`, checks that the slugified title matches the directory name.
 
 Invalid, `~/example/a.md`:
 

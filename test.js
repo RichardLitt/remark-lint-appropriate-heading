@@ -25,6 +25,25 @@ const empty = ``
 const multiWordHeading = `# Multi-Word Heading
 `
 
+const disabledHeading = `<!--lint disable appropriate-heading-->
+Paragraph
+`
+
+const allowHtmlComment = `<!-- some comment-->
+# Heading
+`
+
+const allowHtmlCommentAndOneNewLine = `<!-- some comment-->
+
+# Heading
+`
+
+const tooManyNewLinesAfterHtmlComment = `<!-- some comment-->
+
+
+# Heading
+`
+
 test('remark-lint-appropriate-heading', (t) => {
   var fp = '~/heading/readme.md'
   var mwfp = '~/multi-word-heading/readme.md'
@@ -69,6 +88,30 @@ test('remark-lint-appropriate-heading', (t) => {
     processor.processSync(vfile({path: fp, contents: empty})).messages.map(String),
     ['~/heading/readme.md:1:1-1:1: Document must start with a heading'],
     'should warn without heading'
+  )
+
+  t.deepEqual(
+    processor.processSync(vfile({path: fp, contents: disabledHeading})).messages.map(String),
+    [],
+    'should work when disabling rule'
+  )
+
+  t.deepEqual(
+    processor.processSync(vfile({path: fp, contents: allowHtmlComment})).messages.map(String),
+    [],
+    'should work with html comment'
+  )
+
+  t.deepEqual(
+    processor.processSync(vfile({path: fp, contents: allowHtmlCommentAndOneNewLine})).messages.map(String),
+    [],
+    'should work with html comment'
+  )
+
+  t.deepEqual(
+    processor.processSync(vfile({path: fp, contents: tooManyNewLinesAfterHtmlComment})).messages.map(String),
+    ['~/heading/readme.md:4:1-4:10: Heading does not start at beginning of document'],
+    'should warn if too much newlines after html comment'
   )
 
   t.end()
