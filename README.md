@@ -1,5 +1,7 @@
 # remark-lint-appropriate-heading
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/RichardLitt/remark-lint-appropriate-heading.svg)](https://greenkeeper.io/)
+
 > Check that the top-level heading matches the directory name
 
 This [remark-lint](https://github.com/wooorm/remark-lint) rule was created for [standard-readme](//github.com/RichardLitt/standard-readme).
