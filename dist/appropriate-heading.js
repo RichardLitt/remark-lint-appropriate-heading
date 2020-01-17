@@ -28,7 +28,7 @@ function matchNonCommentMarker(node) {
 
 function startsAtBeginningOfDocument(tree, hasCommentMarker, firstNonCommentMarkerNode, firstNonCommentMarkerIndex) {
   if (hasCommentMarker) {
-    // There should be maximum onle line between the first non-comment marker
+    // There should be maximum one line between the first non-comment marker
     // and the preceeding comment marker. We allow one line since remark introduces
     // a newline between comment and markup when auto-formating markdown.
     var firstLineforMarkup = position.start(firstNonCommentMarkerNode).line;
@@ -55,7 +55,7 @@ function appropriateHeading(tree, file, preferred) {
     var actual = toString(firstNonCommentMarkerNode).toLowerCase();
 
     if (!match(expected, actual, preferred || 'exact')) {
-      file.warn('Heading \'' + actual + '\' is not the directory name', firstNonCommentMarkerNode);
+      file.message('Heading \'' + actual + '\' is not the directory name', firstNonCommentMarkerNode);
     }
   }
 }
