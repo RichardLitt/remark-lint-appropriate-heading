@@ -5,8 +5,18 @@ const vfile = require('vfile')
 const appropriateHeading = require('./')
 const path = require('path')
 
-const processorWithOptions = (options) => remark().use(lint).use(appropriateHeading, options)
-const processor = processorWithOptions()
+/**
+ * Creates file based on given options, runs remark-lint and returns resulting messages.
+ *
+ * @function
+ * @param {VFileOptions} file
+ * @param {string} [options]
+ * @returns {string[]}
+ */
+const processFile = (file, options) =>
+  remark().use(lint).use(appropriateHeading, options)
+    .processSync(vfile(file))
+    .messages.map(String)
 
 const ok = `# Heading
 `
@@ -50,67 +60,67 @@ test('remark-lint-appropriate-heading', (t) => {
   var mwfp = path.join('~', 'multi-word-heading', 'readme.md')
 
   t.deepEqual(
-    processor.processSync(vfile({path: fp, contents: ok})).messages.map(String),
+    processFile({ path: fp, contents: ok }),
     [],
     'should work on valid fixtures'
   )
 
   t.deepEqual(
-    processorWithOptions('slug').processSync(vfile({path: mwfp, contents: multiWordHeading})).messages.map(String),
+    processFile({ path: mwfp, contents: multiWordHeading }, 'slug'),
     [],
     'should work on valid fixtures'
   )
 
   t.deepEqual(
-    processor.processSync(vfile({path: fp, contents: invalidHeading})).messages.map(String),
-    [`${fp}:1:1-1:10: Heading \'invalid\' is not the directory name`],
+    processFile({ path: fp, contents: invalidHeading }),
+    [`${fp}:1:1-1:10: Heading 'invalid' is not the directory name`],
     'should warn for invalid headings (mismatch in directory and heading)'
   )
 
   t.deepEqual(
-    processor.processSync(vfile({path: mwfp, contents: multiWordHeading})).messages.map(String),
-    [`${mwfp}:1:1-1:21: Heading \'multi-word heading\' is not the directory name`],
+    processFile({ path: mwfp, contents: multiWordHeading }),
+    [`${mwfp}:1:1-1:21: Heading 'multi-word heading' is not the directory name`],
     'should warn for invalid headings (mismatch in directory and heading)'
   )
 
   t.deepEqual(
-    processor.processSync(vfile({path: fp, contents: missingHeading})).messages.map(String),
+    processFile({ path: fp, contents: missingHeading }),
     [`${fp}:1:1-1:10: Document must start with a heading`],
     'should warn if the first thing is not a heading'
   )
 
   t.deepEqual(
-    processor.processSync(vfile({path: fp, contents: tooLowHeading})).messages.map(String),
+    processFile({ path: fp, contents: tooLowHeading }),
     [`${fp}:2:1-2:10: Heading does not start at beginning of document`],
     'should warn if the first heading is not on the first line'
   )
 
   t.deepEqual(
-    processor.processSync(vfile({path: fp, contents: empty})).messages.map(String),
+    processFile({ path: fp, contents: empty }),
     [`${fp}:1:1-1:1: Document must start with a heading`],
     'should warn without heading'
   )
 
   t.deepEqual(
-    processor.processSync(vfile({path: fp, contents: disabledHeading})).messages.map(String),
+    processFile({ path: fp, contents: disabledHeading }),
     [],
     'should work when disabling rule'
   )
 
   t.deepEqual(
-    processor.processSync(vfile({path: fp, contents: allowHtmlComment})).messages.map(String),
+    processFile({ path: fp, contents: allowHtmlComment }),
     [],
     'should work with html comment'
   )
 
   t.deepEqual(
-    processor.processSync(vfile({path: fp, contents: allowHtmlCommentAndOneNewLine})).messages.map(String),
+    processFile({ path: fp, contents: allowHtmlCommentAndOneNewLine }),
     [],
     'should work with html comment'
   )
 
   t.deepEqual(
-    processor.processSync(vfile({path: fp, contents: tooManyNewLinesAfterHtmlComment})).messages.map(String),
+    processFile({ path: fp, contents: tooManyNewLinesAfterHtmlComment }),
     [`${fp}:4:1-4:10: Heading does not start at beginning of document`],
     'should warn if too much newlines after html comment'
   )
