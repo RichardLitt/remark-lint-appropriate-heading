@@ -125,5 +125,25 @@ test('remark-lint-appropriate-heading', (t) => {
     'should warn if too much newlines after html comment'
   )
 
+  t.deepEqual(
+    processFile({
+      path: path.join('~', '@scope', 'package', 'README.md'),
+      contents: `# package
+      `
+    }),
+    [],
+    'should work for scoped npm packages, non-breaking, so scope is optional in header'
+  )
+
+  t.deepEqual(
+    processFile({
+      path: path.join('~', '@scope', 'package', 'README.md'),
+      contents: `# @scope/package
+      `
+    }),
+    [],
+    'should work for scoped npm packages'
+  )
+
   t.end()
 })
