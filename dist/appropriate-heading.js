@@ -42,7 +42,6 @@ function startsAtBeginningOfDocument(tree, hasCommentMarker, firstNonCommentMark
 
 function appropriateHeading(tree, file, preferred) {
   var dirnames = (file.dirname === '.' ? file.cwd : file.dirname).split(sep);
-  var expected = dirnames[dirnames.length - 1].toLowerCase();
   var firstNonCommentMarkerIndex = tree.children.findIndex(matchNonCommentMarker);
   var hasCommentMarker = firstNonCommentMarkerIndex > 0;
   var firstNonCommentMarkerNode = tree.children[hasCommentMarker ? firstNonCommentMarkerIndex : 0];
@@ -54,7 +53,15 @@ function appropriateHeading(tree, file, preferred) {
   } else {
     var actual = toString(firstNonCommentMarkerNode).toLowerCase();
 
-    if (!match(expected, actual, preferred || 'exact')) {
+    var expected = dirnames.slice(-1).join('').toLowerCase();
+    var expectedScoped = dirnames.slice(-2).join('/').toLowerCase();
+
+    var isScoped = expectedScoped.startsWith('@');
+
+    var matchExpected = match(expected, actual, preferred || 'exact');
+    var matchExpectedScoped = match(expectedScoped, actual, preferred || 'exact');
+
+    if (!(matchExpected || isScoped && matchExpectedScoped)) {
       file.message('Heading \'' + actual + '\' is not the directory name', firstNonCommentMarkerNode);
     }
   }
